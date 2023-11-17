@@ -1,0 +1,57 @@
+version: "3.8"
+
+volumes:
+  keycloak-db:
+
+services:
+  keycloak-db:
+    image: postgres
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-keycloak}
+      POSTGRES_USER: ${POSTGRES_USER:-keycloak}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-keycloak}
+      PGDATA: /data/postgres
+    volumes:
+      - keycloak-db:/data/postgres
+    ports:
+      - ${POSTGRES_PORT:-5432}:5432
+    networks:
+      - keycloak-network
+
+  keycloak:
+    image: quay.io/keycloak/keycloak
+    depends_on:
+      - keycloak-db
+    ports:
+      - "8080:8080"
+    environment:
+      - KEYCLOAK_USER=admin
+      - KC_DB_URL=jdbc:postgresql://keycloak-db:5432/keycloak
+      - KC_DB_USERNAME=keycloak
+      - KC_DB_PASSWORD=keycloak
+      - KEYCLOAK_ADMIN=admin
+      - KEYCLOAK_ADMIN_PASSWORD=admin
+
+    # first run to import realm: start-dev --db=postgres --import-realm
+    # consequent runs, to not override realm changes: start-dev --db=postgres
+    command: >
+      start-dev --db=postgres
+    volumes:
+      - ./keycloak-realm.json:/opt/keycloak/data/import/realm-export.json
+    networks:
+      - keycloak-network
+      
+  # fastapi-app:
+  #   build: 
+  #     context: ./backend
+  #     dockerfile: Dockerfile
+  #   ports: 
+  #   - 8081:8000
+  #   healthcheck:
+  #     test: ['CMD', 'curl', '-f', 'http://localhost:8081/api/public']
+  #     start_period: 7s
+  #   restart: always
+
+networks:
+  keycloak-network:
+    name: keycloak-network
