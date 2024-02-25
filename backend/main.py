@@ -19,7 +19,7 @@ app = FastAPI(debug=True)
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # Replace this with the actual origins you want to allow
+    allow_origins=["*"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -35,10 +35,12 @@ def extract_token(request: Request) -> str:
 
 def verify_user(request):
     token = extract_token(request)
-
-    url = "http://localhost:8080/realms/SOA/protocol/openid-connect/certs"
+    print("Token: ", token)
+    url = "https://localhost/auth/realms/SOA/protocol/openid-connect/certs"
     jwks_client = PyJWKClient(url)
+    print(" URL: ", url)
     signing_key = jwks_client.get_signing_key_from_jwt(token)
+    print("Signing Key: ", signing_key.key)
     try:
         data = jwt.decode(
             token,

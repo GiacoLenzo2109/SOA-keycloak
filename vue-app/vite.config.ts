@@ -11,12 +11,18 @@ export default defineConfig({
       '@': fileURLToPath(new URL('./src', import.meta.url))
     }
   },
-  server: {
-    proxy: {
-      '/api': {
-        target: 'http://localhost:8080',
-        changeOrigin: true
-      }
-    }
-  }
+  base: '/home'
+  // server: {
+  //   host: '0.0.0.0',
+  //   port: 5173,
+  //   watch: {
+  //     usePolling: true
+  //   },  
+  //   proxy: {
+  //     '/api': {
+  //       target: 'http://localhost:8080',
+  //       changeOrigin: true
+  //     }
+  //   }
+  //}
 })

@@ -1,5 +1,37 @@
 <script setup lang="ts">
   import { RouterLink, RouterView } from 'vue-router'
+  import { useKeycloakStore } from './stores/keycloakStore';
+  import { computed, onMounted, onUpdated, ref } from 'vue';
+  import { fetchProtectedData } from './utils/protectionService';
+
+  const keycloak = useKeycloakStore().keycloak
+  const isAuthenticated = computed(() => keycloak?.authenticated);
+
+  const isUserAdmin = ref(false);
+
+  function isAdmin(): boolean {
+    if(isAuthenticated.value){
+      keycloak?.tokenParsed!.realm_access!.roles.forEach((role: string) => {
+        if (role === "admin") {
+          console.log("User is admin");
+          isUserAdmin.value = true;
+          return true;
+        }
+        else {
+          console.error("User is not admin");
+          isUserAdmin.value = false;
+          return false;
+        }
+      });
+    }
+    console.error("User not logged in");
+    isUserAdmin.value = false;
+    return false;
+  }
+
+  onMounted(() => {
+    isAdmin()
+  });
 </script>
 
 <template>
@@ -10,7 +42,7 @@
       <nav>
         <RouterLink to="/">Home</RouterLink>
         <RouterLink to="/protected">Protected</RouterLink>
-        <RouterLink to="/about">About</RouterLink>
+        <RouterLink to="/admin">Admin</RouterLink>
       </nav>
     </div>
   </header>

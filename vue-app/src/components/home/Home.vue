@@ -10,42 +10,34 @@ import { ref, computed, onMounted, onUpdated } from 'vue';
 
 let keycloak = useKeycloakStore().keycloak;
 
-onMounted(() => {
-  updateIsLogged();
-});
+// onMounted(() => {
+//   updateIsLogged();
+// });
 
-onUpdated(() => {
-  updateIsLogged();
-});
+// onUpdated(() => {
+//   updateIsLogged();
+// });
 
 const isLogged = ref(keycloak?.authenticated);
 
 const buttonText = computed(() => (isLogged.value ? 'Logout' : 'Login'));
 
-function updateIsLogged() {
-    setInterval(() => {
-      isLogged.value = keycloak!.authenticated ? true : false;
-      console.log("IsLogged: " + isLogged.value)  
-      }
-    )
-}
-
 function login() {
   keycloak?.login().then(() => {
     console.log("Login successful!");
-    updateIsLogged();
   });
 }
 
 function logout() {
   keycloak?.logout().then(() => {
     console.log("Logout successful!");
-    updateIsLogged();
+    login();
   });
 }
 
 function signin() {
   isLogged.value ? logout() : login()
+  isLogged.value = keycloak!.authenticated ? true : false;
 }
 </script>
 
@@ -74,7 +66,7 @@ function signin() {
 
     We interact with keycloak using keycloak-js package. The keycloak's client authentication is set to public.
     <br/>
-    Keycloak runs on <a href="http://localhost:8080/" target="_blank">http://localhost:8080/</a> inside a Docker's container.
+    Keycloak runs on <a href="https://localhost/" target="_blank">https://localhost/</a> inside a Docker's container.
   </Item>
 
   <Item>

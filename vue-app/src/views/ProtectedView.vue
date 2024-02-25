@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import Protected from '../components/protected/Protected.vue'
+import Protected from '@/components/protected/Protected.vue'
 </script>
 
 <template>

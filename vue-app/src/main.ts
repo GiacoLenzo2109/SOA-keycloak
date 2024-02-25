@@ -26,6 +26,12 @@ let keycloak = new Keycloak(keycloakConfig)
 const keycloakStore = useKeycloakStore()
 keycloakStore.keycloak = keycloak
 
+/**
+ * Configuration options for initializing Keycloak.
+ * @remarks
+ * `initOptions` is used to specify various settings for initializing Keycloak in the application.
+ * These settings include the behavior on page load, the redirect URI, logging options, and login iframe checking.
+ */
 let initOptions: KeycloakInitOptions = {
     onLoad: 'check-sso',
     redirectUri: import.meta.env.VITE_KEYCLOAK_REDIRECT_URL,
