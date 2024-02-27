@@ -2,36 +2,33 @@
   import { RouterLink, RouterView } from 'vue-router'
   import { useKeycloakStore } from './stores/keycloakStore';
   import { computed, onMounted, onUpdated, ref } from 'vue';
-  import { fetchProtectedData } from './utils/protectionService';
+  import { useUserStore } from './stores/userStore';
+import { serviceFactory } from './utils/factory';
 
-  const keycloak = useKeycloakStore().keycloak
-  const isAuthenticated = computed(() => keycloak?.authenticated);
+  // const keycloak = useKeycloakStore().keycloak
+  // const userStore = useUserStore()
+  // const isAuthenticated = computed(() => userStore?.authenticated)
 
-  const isUserAdmin = ref(false);
+  // const isUserAdmin = ref(false);
 
-  function isAdmin(): boolean {
-    if(isAuthenticated.value){
-      keycloak?.tokenParsed!.realm_access!.roles.forEach((role: string) => {
-        if (role === "admin") {
-          console.log("User is admin");
-          isUserAdmin.value = true;
-          return true;
-        }
-        else {
-          console.error("User is not admin");
-          isUserAdmin.value = false;
-          return false;
-        }
-      });
-    }
-    console.error("User not logged in");
-    isUserAdmin.value = false;
-    return false;
-  }
+  // function isAdmin() {
+  //   if(isAuthenticated.value){
+  //     userStore.roles.includes('admin') ? isUserAdmin.value = true : isUserAdmin.value = false;
+  //   }
+  // }
 
-  onMounted(() => {
-    isAdmin()
-  });
+  // onMounted(() => {
+  //   setInterval(() => {
+  //     isAdmin()
+  //   }, 6000); 
+  // });
+
+  // onUpdated(() => {
+  //   isAdmin()
+  // });
+
+  const userStore = useUserStore();
+  const keycloakService = serviceFactory(userStore)
 </script>
 
 <template>
@@ -42,7 +39,7 @@
       <nav>
         <RouterLink to="/">Home</RouterLink>
         <RouterLink to="/protected">Protected</RouterLink>
-        <RouterLink to="/admin">Admin</RouterLink>
+        <RouterLink v-if="userStore.roles.includes('admin') ? true  : false" to="/admin">Admin</RouterLink>
       </nav>
     </div>
   </header>

@@ -3,22 +3,31 @@
 import { useKeycloakStore } from '@/stores/keycloakStore';
 import { onMounted, ref } from 'vue';
 import { fetchProtectedData } from '@/utils/protectionService';
+import { useUserStore } from '@/stores/userStore';
+import { serviceFactory } from '@/utils/factory';
 
 
 const protectedData = ref("User is not an Admin")
 
 async function fetchData() {
 
-    const keycloak = useKeycloakStore().keycloak
+    const userStore = useUserStore()
+    const keycloak = serviceFactory(userStore)
 
-    if(keycloak?.authenticated != null && !keycloak?.authenticated){
+    if(!userStore.authenticated){
         keycloak.login().then(async _ => {
             let data = await fetchProtectedData();
             const userData = JSON.parse(data)
 
-            userData['request_token']['realm_access']['roles'].forEach((role: string) => {
+            // userData['request_token']['realm_access']['roles'].forEach((role: string) => {
+            //     if(role === 'admin'){
+            //         protectedData.value = data.toString()
+            //     }
+            // })
+
+            userStore.roles.forEach((role: string) => {
                 if(role === 'admin'){
-                    protectedData.value = data.toString()
+                    protectedData.value = JSON.stringify(userData)
                 }
             })
         })
@@ -26,9 +35,15 @@ async function fetchData() {
     else {
         let data = await fetchProtectedData();
         const userData = JSON.parse(data)
-        userData['request_token']['realm_access']['roles'].forEach((role: string) => {
+        // userData['request_token']['realm_access']['roles'].forEach((role: string) => {
+        //     if(role === 'admin'){
+        //         protectedData.value = data.toString()
+        //     }
+        // })
+
+        userStore.roles.forEach((role: string) => {
             if(role === 'admin'){
-                protectedData.value = data.toString()
+                protectedData.value = JSON.stringify(userData)
             }
         })
     }

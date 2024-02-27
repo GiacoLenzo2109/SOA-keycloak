@@ -7,6 +7,7 @@ import logging
 import socket
 import jwt
 from jwt import PyJWKClient
+import os
 
 gunicorn_logger = logging.getLogger('gunicorn.error')
 logger.handlers = gunicorn_logger.handlers
@@ -36,9 +37,9 @@ def extract_token(request: Request) -> str:
 def verify_user(request):
     token = extract_token(request)
     print("Token: ", token)
-    url = "https://localhost/auth/realms/SOA/protocol/openid-connect/certs"
-    jwks_client = PyJWKClient(url)
+    url = "http://keycloak:8080/auth/realms/SOA/protocol/openid-connect/certs"
     print(" URL: ", url)
+    jwks_client = PyJWKClient(url)
     signing_key = jwks_client.get_signing_key_from_jwt(token)
     print("Signing Key: ", signing_key.key)
     try:

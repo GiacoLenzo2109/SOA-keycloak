@@ -1,9 +1,13 @@
 import { useKeycloakStore } from "@/stores/keycloakStore";
+import { serviceFactory } from "./factory";
+import { useUserStore } from "@/stores/userStore";
 
 export async function fetchProtectedData(): Promise<string> {
-    const keycloak = useKeycloakStore().keycloak;
+    // const keycloak = useKeycloakStore().keycloak;
+    const userStore = useUserStore()
+    // const keycloak = serviceFactory(userStore)
     var myHeaders = new Headers();
-    myHeaders.append('Authorization', `Bearer ${keycloak?.token}`);
+    myHeaders.append('Authorization', `Bearer ${userStore.token}`);
     var requestOptions = {
         headers: myHeaders,
     };

@@ -3,47 +3,34 @@
 import { useKeycloakStore } from '@/stores/keycloakStore';
 import { onMounted, ref } from 'vue';
 import { fetchProtectedData } from '@/utils/protectionService';
+import { serviceFactory } from '@/utils/factory';
+import { useUserStore } from '@/stores/userStore';
 
 
 const protectedData = ref("")
+const userStore = useUserStore()
+const keycloak = serviceFactory(userStore)
 
 async function fetchData() {
 
-    const keycloak = useKeycloakStore().keycloak
+    // const keycloak = useKeycloakStore().keycloak
 
-    if(keycloak?.authenticated != null && !keycloak?.authenticated){
-        keycloak.login().then(async _ => {
-            protectedData.value = await fetchProtectedData();
-        })
-    }
-    else {
+    // if(!userStore.authenticated){
+        // keycloak.login().then(async _ => {
+        //     protectedData.value = await fetchProtectedData();
+        // })
+    // }
+    // else {
         protectedData.value = await fetchProtectedData();
-    }
+    // }
 }
 
-// function fetchProtectedData() {
-//     const keycloak = useKeycloakStore().keycloak
-//     var myHeaders = new Headers();
-//     myHeaders.append('Authorization', `Bearer ${keycloak?.token}`);
-//     var requestOptions = {
-//         headers: myHeaders,
-//     };
-
-//     fetch('/api/protected', requestOptions)
-//         .then(response => response.text())
-//         .then(text => {
-//             protectedData.value = text
-//             console.info("Protected data loaded successfully")
-//         }
-//     ).catch(err => console.error(protectedData.value = "Protected data not loaded"))
-// }
-
 onMounted(() => {
-    console.log("Mounted")
     fetchData()
 })
 </script>
 
 <template>
-    <h3>Data: {{ protectedData }}</h3>
+    <h3 v-if="userStore.authenticated">Data: {{ protectedData }}</h3>
+    <h3 v-else>Login to load protected data!</h3>
 </template>
