@@ -3,7 +3,7 @@
   import { useKeycloakStore } from './stores/keycloakStore';
   import { computed, onMounted, onUpdated, ref } from 'vue';
   import { useUserStore } from './stores/userStore';
-import { serviceFactory } from './utils/factory';
+  import { serviceFactory } from './utils/factory';
 
   // const keycloak = useKeycloakStore().keycloak
   // const userStore = useUserStore()

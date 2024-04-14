@@ -16,14 +16,14 @@ export class Service implements KeycloakService {
         console.log("Logging in");
         // const auth = await this.keycloak.init(initOptions)
         //if(auth){
-            await this.keycloak.login()
-            console.log("Login successful!");
-            this.userStore.user = this.keycloak.profile!
-            this.userStore.authenticated = this.keycloak.authenticated as boolean
-            this.userStore.token = this.keycloak.token as string
-            this.userStore.roles = this.keycloak.tokenParsed!.realm_access!.roles as string[]
-    
-            await this.refreshToken()
+        await this.keycloak.login()
+        console.log("Login successful!");
+        this.userStore.user = this.keycloak.profile!
+        this.userStore.authenticated = this.keycloak.authenticated as boolean
+        this.userStore.token = this.keycloak.token as string
+        this.userStore.roles = this.keycloak.tokenParsed!.realm_access!.roles as string[]
+
+        await this.refreshToken()
         // }
         // else {
         //     console.log("Login failed!");
@@ -64,6 +64,11 @@ export class Service implements KeycloakService {
         this.userStore.authenticated = this.keycloak.authenticated as boolean
         this.userStore.token = this.keycloak.token as string
         this.userStore.roles = this.keycloak.tokenParsed!.realm_access!.roles as string[]
+        if (auth) {
+            setTimeout(async () => {
+                await this.refreshToken()
+            }, this.conf.refreshTokenMilliseconds)
+        }
         return auth;
     }
 }

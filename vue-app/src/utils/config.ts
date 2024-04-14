@@ -10,14 +10,6 @@ export interface ServiceConfigType {
     refreshTokenMilliseconds: number
 }
 
-// export const getEnableKeycloak = () : boolean => {
-//     const raw = import.meta.env.VITE_APP_KEYCLOAK_ENABLED;
-//     if (raw) {
-//         return JSON.parse(raw)
-//     }
-//     return false;
-// }
-
 export const keycloakConfig : KeycloakConfigType = {
     url: import.meta.env.VITE_KEYCLOAK_URL ?? "",
     realm: import.meta.env.VITE_KEYCLOAK_REALM ?? "",

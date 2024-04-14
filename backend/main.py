@@ -27,7 +27,7 @@ app.add_middleware(
 )
 
 def extract_token(request: Request) -> str:
-    authorization_header = request.headers.get("Authorization")
+    authorization_header = request.headers.get("authorization")
     if authorization_header is None or not authorization_header.startswith("Bearer "):
         raise HTTPException(status_code=401, detail="Invalid or missing Authorization header")
 
