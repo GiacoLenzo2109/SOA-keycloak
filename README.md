@@ -2,15 +2,20 @@
 
 ## Table of Contents
 
+- [Certificates](#certificates)
 - [Installation](#installation)
-
-## Installation
+  
+## Certificates
 
 ```bash
 # Create SSL certificates
 cd certs
 ./generate_sample_certs.sh
+```
 
+## Installation
+
+```bash
 # Launhc all containers
 docker-compose up -d
 ```
