@@ -1,6 +1,4 @@
 <script setup lang="ts">
-
-import { useKeycloakStore } from '@/stores/keycloakStore';
 import { onMounted, ref } from 'vue';
 import { fetchProtectedData } from '@/utils/protectionService';
 import { useUserStore } from '@/stores/userStore';
@@ -18,13 +16,6 @@ async function fetchData() {
         keycloak.login().then(async _ => {
             let data = await fetchProtectedData();
             const userData = JSON.parse(data)
-
-            // userData['request_token']['realm_access']['roles'].forEach((role: string) => {
-            //     if(role === 'admin'){
-            //         protectedData.value = data.toString()
-            //     }
-            // })
-
             userStore.roles.forEach((role: string) => {
                 if(role === 'admin'){
                     protectedData.value = JSON.stringify(userData)
@@ -35,12 +26,6 @@ async function fetchData() {
     else {
         let data = await fetchProtectedData();
         const userData = JSON.parse(data)
-        // userData['request_token']['realm_access']['roles'].forEach((role: string) => {
-        //     if(role === 'admin'){
-        //         protectedData.value = data.toString()
-        //     }
-        // })
-
         userStore.roles.forEach((role: string) => {
             if(role === 'admin'){
                 protectedData.value = JSON.stringify(userData)

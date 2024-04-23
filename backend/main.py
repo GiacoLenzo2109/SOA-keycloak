@@ -7,7 +7,6 @@ import logging
 import socket
 import jwt
 from jwt import PyJWKClient
-import os
 
 gunicorn_logger = logging.getLogger('gunicorn.error')
 logger.handlers = gunicorn_logger.handlers

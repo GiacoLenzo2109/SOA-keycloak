@@ -14,8 +14,6 @@ export class Service implements KeycloakService {
 
     async login() : Promise<void>{
         console.log("Logging in");
-        // const auth = await this.keycloak.init(initOptions)
-        //if(auth){
         await this.keycloak.login()
         console.log("Login successful!");
         this.userStore.user = this.keycloak.profile!
@@ -24,10 +22,6 @@ export class Service implements KeycloakService {
         this.userStore.roles = this.keycloak.tokenParsed!.realm_access!.roles as string[]
 
         await this.refreshToken()
-        // }
-        // else {
-        //     console.log("Login failed!");
-        // }
     }
     
     async logout() {

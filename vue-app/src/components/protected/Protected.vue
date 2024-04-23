@@ -12,17 +12,7 @@ const userStore = useUserStore()
 const keycloak = serviceFactory(userStore)
 
 async function fetchData() {
-
-    // const keycloak = useKeycloakStore().keycloak
-
-    // if(!userStore.authenticated){
-        // keycloak.login().then(async _ => {
-        //     protectedData.value = await fetchProtectedData();
-        // })
-    // }
-    // else {
-        protectedData.value = await fetchProtectedData();
-    // }
+    protectedData.value = await fetchProtectedData();
 }
 
 onMounted(() => {

@@ -2,8 +2,8 @@
     export default {
         props: {
             buttonText: {
-              type: String, // You can specify the prop type
-              default: 'Button', // Default text if not provided
+              type: String,
+              default: 'Button',
             },
         },
     };

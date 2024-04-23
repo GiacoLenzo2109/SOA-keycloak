@@ -29,16 +29,13 @@ services:
       - keycloak-db:/data/postgres
     ports:
       - ${POSTGRES_PORT:-5432}:5432
-    # networks:
-    #   - keycloak-network
+
 
   keycloak:
     image: quay.io/keycloak/keycloak
     depends_on:
       - keycloak-db
     command: ["start-dev", "--proxy", "edge", "--http-relative-path", "/auth", "--hostname-admin", "localhost", "--import-realm"]
-    # ports:
-    #   - "8080:8080"
     environment:
       - KEYCLOAK_USER=admin
       # - KC_DB_URL=jdbc:postgresql://keycloak-db:5432/keycloak
@@ -53,35 +50,19 @@ services:
     #   start-dev --db=postgres
     volumes:
       - ./keycloak-realm.json:/opt/keycloak/data/import/realm-export.json
-    # networks:
-    #   - keycloak-network
       
   fastapi-app:
     build: 
       context: ./backend
       dockerfile: Dockerfile
-    # ports: 
-    # - "8081:8000"
-    # healthcheck:
-    #   test: ['CMD', 'curl', '-f', 'http://localhost:8081/api/public']
-    #   start_period: 7s
     restart: always
 
   vue-app:
     build:
       context: ./vue-app
       dockerfile: Dockerfile
-    # ports:
-    #    - "5173:5173"
     restart: "always"
-    # healthcheck:
-    #   test: ["CMD", "curl","--fail","localhost:80/health"]
-    #   interval: 30s
-    #   retries: 3
 
-# networks:
-#   keycloak-network:
-#     name: keycloak-network
 secrets:
   ssl_cert:
     file: certs/site.crt

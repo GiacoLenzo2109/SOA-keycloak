@@ -25,6 +25,3 @@ const keycloak = serviceFactory(userStore)
 
 console.log("5. Initializing Keycloak")
 keycloak.init()
-// setTimeout(async () => {
-//     await keycloak.refreshToken()
-// }, import.meta.env.VITE_REFRESH_TOKEN_MS)

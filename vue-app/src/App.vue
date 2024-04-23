@@ -1,32 +1,7 @@
 <script setup lang="ts">
   import { RouterLink, RouterView } from 'vue-router'
-  import { useKeycloakStore } from './stores/keycloakStore';
-  import { computed, onMounted, onUpdated, ref } from 'vue';
   import { useUserStore } from './stores/userStore';
   import { serviceFactory } from './utils/factory';
-
-  // const keycloak = useKeycloakStore().keycloak
-  // const userStore = useUserStore()
-  // const isAuthenticated = computed(() => userStore?.authenticated)
-
-  // const isUserAdmin = ref(false);
-
-  // function isAdmin() {
-  //   if(isAuthenticated.value){
-  //     userStore.roles.includes('admin') ? isUserAdmin.value = true : isUserAdmin.value = false;
-  //   }
-  // }
-
-  // onMounted(() => {
-  //   setInterval(() => {
-  //     isAdmin()
-  //   }, 6000); 
-  // });
-
-  // onUpdated(() => {
-  //   isAdmin()
-  // });
-
   const userStore = useUserStore();
   const keycloakService = serviceFactory(userStore)
 </script>

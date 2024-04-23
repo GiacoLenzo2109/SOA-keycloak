@@ -5,50 +5,11 @@ import ToolingIcon from '../icons/IconTooling.vue';
 import CommunityIcon from '../icons/IconCommunity.vue';
 import LoginIcon from '../icons/IconLogin.vue';
 import Button from '../../components/Button.vue';
-import { useKeycloakStore } from '@/stores/keycloakStore';
-import { ref, computed, onMounted, onUpdated } from 'vue';
 import { useUserStore } from '@/stores/userStore';
-// import { login, logout } from '@/utils/keycloakService';
 import { serviceFactory } from '@/utils/factory';
 
-// let keycloak = useKeycloakStore().keycloak;
 const userStore = useUserStore();
 const keycloak = serviceFactory(userStore)
-const logout = () => keycloak.logout()
-const login = () => keycloak.login()
-
-// onUpdated(() => {
-//   updateIsLogged();
-// });
-
-// const isLogged = ref(userStore?.authenticated);
-
-// const buttonText = computed(() => (userStore.authenticated ? 'Logout' : 'Login'));
-
-// function login() {
-//   keycloak?.login().then(() => {
-//     console.log("Login successful!");
-//     userStore.user = keycloak!.profile!
-//     userStore.authenticated = keycloak!.authenticated as boolean
-//     userStore.token = keycloak!.token as string
-//     userStore.roles = keycloak!.tokenParsed!.realm_access!.roles as string[]
-//   });
-// }
-
-// function logout() {
-//   keycloak?.logout().then(() => {
-//     console.log("Logout successful!");
-//     userStore.user = null
-//     userStore.authenticated = false
-//     userStore.token = ""
-//     userStore.roles = []
-//     login();
-//   });
-// }
-
-// function signin() {
-//   userStore.authenticated ? keycloak.logout() : keycloak.login()
-// }
 </script>
 
 
